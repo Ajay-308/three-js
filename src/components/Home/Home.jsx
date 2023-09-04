@@ -7,6 +7,7 @@ import spaceImage from '../../image/space.png'
 import { Typography } from "@mui/material"
 import TimeLine from '../TimeLine/TimeLine'
 
+
 const Home = () => {
 
   useEffect(() => {
@@ -43,7 +44,7 @@ const Home = () => {
     scene.add(moon)
     scene.add(pointLight)
     scene.add(pointLight2)
-    scene.background = spaceTexture
+    scene.background = spaceTexture;
 
     window.addEventListener("mousemove", (e) => {
       //for change of x coordinate half part  //left upper side
@@ -88,6 +89,55 @@ const Home = () => {
     animate()
   }, [])
 
+  window.onload = () => {
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+    const headingText = "Skills";
+    const textGeometry = new THREE.TextGeometry(headingText, {
+      font: new THREE.FontLoader().parse(YOUR_FONT_JSON_URL), // Replace with your font JSON URL
+      size: 0.2, // Size of the text
+      height: 0.02, // Extrusion depth
+    });
+
+    const textMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff }); // Color of the text
+    const textMesh = new THREE.Mesh(textGeometry, textMaterial);
+    textMesh.position.set(-1, 1, -2); // Adjust the position of the text
+    scene.add(textMesh);
+
+    camera.position.z = 4.5;
+
+    const textureLoader = new THREE.TextureLoader();
+    const textures = [
+      textureLoader.load("https://res.cloudinary.com/practicaldev/image/fetch/s--cX6HI9gA--/c_imagga_scale,f_auto,fl_progressive,h_900,q_auto,w_1600/https://dev-to-uploads.s3.amazonaws.com/i/j71o6fyry39eaz1eyjna.jpg"),
+      textureLoader.load(""),
+      textureLoader.load("https://blog.postman.com/wp-content/uploads/2020/03/api-clients.png"),
+      textureLoader.load("https://miro.medium.com/v2/resize:fit:1024/0*bDsODuOR9ZeQdN7T.png"),
+      textureLoader.load("https://images.shiksha.com/mediadata/shikshaOnline/mailers/2022/naukri-learning/what-is/What-is-Data-Structures-and-Algorithms.jpg"),
+      textureLoader.load("https://images.pexels.com/photos/6017481/pexels-photo-6017481.jpeg")
+    ];
+
+    const geometry = new THREE.BoxGeometry();
+    const materials = textures.map(texture => new THREE.MeshBasicMaterial({ map: texture }));
+    const cube = new THREE.Mesh(geometry, materials);
+    scene.add(cube);
+
+    camera.position.z = 4.5;
+
+    const animate = () => {
+      requestAnimationFrame(animate);
+
+      cube.rotation.x += 0.05;
+      cube.rotation.y += 0.05;
+
+      renderer.render(scene, camera);
+    };
+
+    animate();
+  };
+
 
   return (
     <div className='home'>
@@ -96,33 +146,12 @@ const Home = () => {
         <Typography variant="h3">TIMELINE</Typography>
         <TimeLine timelines={[1, 2, 3, 4]} />
       </div>
-      <div className='homeSkills'>
+      {<div className='homeSkills'>
         <Typography variant="h3">Skills</Typography>
-        <div className="homeCubeSkills">
-          <div className="homeCubeSkillsFaces">
-            <div className="homeCubeSkillsFaces1">
-              <img src="https://images.pexels.com/photos/6017481/pexels-photo-6017481.jpeg" width="200px" alt="Face1" />
-            </div>
-            <div className="homeCubeSkillsFaces2">
-              <img src="https://images.pexels.com/photos/6017481/pexels-photo-6017481.jpeg" width="200px" alt="Face2" />
-            </div>
-            <div className="homeCubeSkillsFaces3">
-              <img src="https://images.pexels.com/photos/6017481/pexels-photo-6017481.jpeg" width="200px" alt="Face3" />
-            </div>
-            <div className="homeCubeSkillsFaces4">
-              <img src="https://images.pexels.com/photos/6017481/pexels-photo-6017481.jpeg" width="200px" alt="Face4" />
-            </div>
-            <div className="homeCubeSkillsFaces5">
-              <img src="https://images.pexels.com/photos/6017481/pexels-photo-6017481.jpeg" width="200px" alt="Face5" />
-            </div>
-            <div className="homeCubeSkillsFaces6">
-              <img src="https://images.pexels.com/photos/6017481/pexels-photo-6017481.jpeg" width="200px" alt="Face6" />
-            </div>
-          </div>
 
-        </div>
-      </div>
-    </div>)
+      </div>}
+
+    </div >)
 }
 
 export default Home
